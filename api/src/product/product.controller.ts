@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common'
+import { JwtGuard } from 'src/user/guards/jwt.guard'
 
 import { ProductDocument } from './product.schema'
 import { ProductService } from './product.service'
@@ -21,6 +31,7 @@ export class ProductController {
     return this.productService.findAll()
   }
 
+  @UseGuards(JwtGuard)
   @Get(':id')
   findProduct(@Param('id') id: string): Promise<ProductDocument> {
     return this.productService.find(id)
