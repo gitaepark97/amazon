@@ -2,11 +2,42 @@ import { FC, FormEvent } from 'react'
 import { Box, Button, Divider, Grid, InputLabel, TextField, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 
+import useInput from '../../../hooks/use-input'
+import { validateEmail } from '../../../shared/utils/validation/email'
+import { validatePasswordLength } from '../../../shared/utils/validation/length'
+
 const SigninFormComponent: FC = () => {
+  const {
+    text: email,
+    shouldDisplayError: emailHasError,
+    textChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    clearHandler: emailClearHandler,
+  } = useInput(validateEmail)
+
+  const {
+    text: password,
+    shouldDisplayError: passwordHasError,
+    textChangeHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+    clearHandler: passwordClearHandler,
+  } = useInput(validatePasswordLength)
+
+  const clearForm = () => {
+    emailClearHandler()
+    passwordClearHandler()
+  }
+
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    console.log('Clicked')
+    if (emailHasError || passwordHasError) return
+
+    if (email.length === 0 || password.length === 0) return
+
+    console.log('USER', email, password)
+
+    clearForm()
   }
 
   return (
@@ -29,13 +60,29 @@ const SigninFormComponent: FC = () => {
             <InputLabel sx={{ fontWeight: 500, marginTop: 1, color: '#000000' }} htmlFor="email">
               Email
             </InputLabel>
-            <TextField type="text" name="email" id="email" variant="outlined" size="small" />
+            <TextField
+              value={email}
+              onChange={emailChangeHandler}
+              onBlur={emailBlurHandler}
+              error={emailHasError}
+              helperText={emailHasError ? 'Enter your email' : ''}
+              type="text"
+              name="email"
+              id="email"
+              variant="outlined"
+              size="small"
+            />
 
             <InputLabel sx={{ fontWeight: 500, marginTop: 1, color: '#000000' }} htmlFor="password">
               Password
             </InputLabel>
             <TextField
-              type="text"
+              value={password}
+              onChange={passwordChangeHandler}
+              onBlur={passwordBlurHandler}
+              error={passwordHasError}
+              helperText={passwordHasError ? 'Minimum 6 characters required' : ''}
+              type="password"
               name="password"
               id="password"
               variant="outlined"
@@ -79,6 +126,7 @@ const SigninFormComponent: FC = () => {
           </small>
         </div>
       </Box>
+
       <div style={{ marginTop: '16px' }}>
         <Divider>
           <small style={{ color: '#767676' }}>New to Amazon?</small>
