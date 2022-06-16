@@ -2,7 +2,7 @@ import { FC, FormEvent, useEffect } from 'react'
 import { Box, Button, CircularProgress, Divider, Grid, InputLabel, TextField, Typography } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
 
-import useInput from '../../../hooks/use-input'
+import useInput from '../../../hooks/input/use-input'
 import { validateEmail } from '../../../shared/utils/validation/email'
 import { validatePasswordLength } from '../../../shared/utils/validation/length'
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux/hooks'
@@ -114,6 +114,7 @@ const SigninFormComponent: FC = () => {
             />
 
             <Button
+              disabled={!validatePasswordLength(password) || !validateEmail(email)}
               variant="contained"
               style={{
                 marginTop: '16px',

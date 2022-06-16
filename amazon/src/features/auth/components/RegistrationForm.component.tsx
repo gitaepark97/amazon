@@ -2,7 +2,7 @@ import { FC, FormEvent, useEffect } from 'react'
 import { Box, Button, CircularProgress, Divider, Grid, InputLabel, TextField, Typography } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
 
-import useInput from '../../../hooks/use-input'
+import useInput from '../../../hooks/input/use-input'
 import { validateNameLength, validatePasswordLength } from '../../../shared/utils/validation/length'
 import { validateEmail } from '../../../shared/utils/validation/email'
 import { NewUser } from '../models/NewUser'
