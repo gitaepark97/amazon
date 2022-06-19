@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material'
 
+import { store } from './store'
 import { theme } from './shared/utils/theme'
 import HomePage from './pages/Home.page'
 import SigninPage from './pages/Signin.page'
@@ -20,6 +21,16 @@ function App() {
       </Router>
     </ThemeProvider>
   )
+}
+
+type CypressWindow = Window & typeof globalThis & { Cypress: any; store: any }
+
+const thisWindow = window as CypressWindow
+
+if (thisWindow.Cypress) {
+  console.log('CYPRESS WINDOW')
+
+  thisWindow.store = store
 }
 
 export default App
